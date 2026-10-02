@@ -1,0 +1,124 @@
+/*-- scss:defaults --*/
+
+$navy: #17324d;
+$blue: #2f6f9f;
+$light-blue: #eaf3f8;
+$teal: #2a9d8f;
+$light-teal: #e8f6f4;
+$gold: #e9b949;
+$light-gold: #fff6df;
+$red: #c8553d;
+$light-red: #fbecea;
+$dark: #263238;
+
+
+/*-- scss:rules --*/
+
+.reveal {
+  color: $dark;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  color: $navy;
+  font-weight: 650;
+}
+
+.reveal h2 {
+  border-bottom: 3px solid $blue;
+  padding-bottom: 0.15em;
+}
+
+.reveal a {
+  color: $blue;
+}
+
+
+/* Tables */
+
+.reveal table {
+  border-collapse: collapse;
+  font-size: 0.75em;
+}
+
+.reveal table th {
+  background-color: $navy;
+  color: white;
+  font-weight: 600;
+  padding: 0.35em 0.55em;
+}
+
+.reveal table td {
+  padding: 0.35em 0.55em;
+  border-bottom: 1px solid #d9e2e8;
+}
+
+.reveal table tr:nth-child(even) {
+  background-color: $light-blue;
+}
+
+
+/* Emphasis */
+
+.reveal strong {
+  color: $blue;
+}
+
+
+/* Code */
+
+.reveal code {
+  color: $red;
+  background-color: #f6f1ef;
+}
+
+
+/* Colored text */
+
+.blue {
+  color: $blue;
+}
+
+.teal {
+  color: $teal;
+}
+
+.gold {
+  color: $gold;
+}
+
+.red {
+  color: $red;
+}
+
+
+/* Highlight box */
+
+.highlight {
+  background: $light-blue;
+  border-left: 6px solid $blue;
+  padding: 0.5em 0.8em;
+  border-radius: 4px;
+}
+
+
+/* Key result box */
+
+.key-result {
+  background: $light-teal;
+  border-left: 6px solid $teal;
+  padding: 0.6em 0.9em;
+  border-radius: 5px;
+  font-size: 0.9em;
+}
+
+
+/* Important box */
+
+.important {
+  background: $light-gold;
+  border-left: 6px solid $gold;
+  padding: 0.6em 0.9em;
+  border-radius: 5px;
+}
