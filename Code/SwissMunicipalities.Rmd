@@ -1,0 +1,134 @@
+---
+title: "Introduction to Random Sampling"
+subtitle: "R Example: Swiss Municipalities"
+output: html_document
+---
+
+## Set Up
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load packages
+
+```{r}
+library(ggplot2)
+library(sampling)
+
+# if either package is not installed, it can be done by
+# install.packages('sampling')
+# install.packages('ggplot2')
+```
+
+## Draw a SRS
+
+This is just one way to accomplish drawing a SRS.
+
+```{r}
+# draw a simple random sample (without replacement) of size 20 
+# from a population of size 500
+
+sample(1:500, size=20, replace=FALSE)
+```
+
+## Example: Swiss Municipalities
+
+This population provides information about the Swiss municipalities in 2003. It is a data frame with 2896 observations on 22 variables, including things like area under cultivation, area with buildings, number of households, etc.
+
+```{r}
+?swissmunicipalities				# info about data
+
+data(swissmunicipalities)			# load data
+```
+
+#### 1. Consider the area under cultivation for each municipality.
+
+```{r}
+# area under cultivation
+areacult <- swissmunicipalities$Surfacescult	
+
+# print the first 200
+areacult[1:200]
+```
+
+#### 2. Draw a SRS of size 100
+
+```{r}
+n <- 100
+N <- length(areacult)
+
+# this will return the indices of the samples observations
+samp <- sample(1:N, size=n, replace=FALSE)
+
+# print the names of the first 40 sampled municipalities
+names <- swissmunicipalities$Nom
+names[samp[1:40]]
+```
+
+#### 3. Draw a SRS of size 100
+
+```{r}
+# print the areas under cultivation for the sampled municipalities
+areacult[samp]
+```
+
+#### 4. Estimate the population total using our sample
+
+```{r}
+t.hat1 <- N * mean(areacult[samp])
+t.hat1
+
+# calculate the actual population total
+t <- sum(areacult)
+t
+```
+
+#### 5. Let's draw 10 more samples
+
+```{r fig.height=4, fig.width=5, message=FALSE, warning=FALSE, out.width='400px', dpi=300, fig.align="center"}
+t.hat <- rep(0, 10)
+for (i in 1:10) {
+	samp.new <- sample(1:N, size=n, replace=FALSE)
+	t.hat[i] <- N * mean(areacult[samp.new])
+}
+
+ggplot(data.frame(t.hat), aes(x=t.hat)) + 
+  geom_histogram() + theme_bw() + 
+  geom_vline(xintercept=t, col="red")
+```
+
+#### 6. Let's draw many MANY more samples
+
+```{r fig.height=4, fig.width=5, message=FALSE, warning=FALSE, out.width='400px', dpi=300, fig.align="center"}
+t.hat <- rep(0, 100000)
+for (i in 1:100000) {
+	samp.new <- sample(1:N, size=n, replace=FALSE)
+	t.hat[i] <- N * mean(areacult[samp.new])
+}
+
+ggplot(data.frame(t.hat), aes(x=t.hat)) + 
+  geom_histogram() + theme_bw() +
+  geom_vline(xintercept=t, col="red")
+```
+
+## Questions to consider
+
+#### 1.  Does this distribution look familiar?
+
+<br>
+
+#### 2. How close is the expectation of this distribution to the pop total?
+
+```{r}
+t
+mean(t.hat)
+```
+
+<br>
+
+#### 3. How many different samples are there?
+
+```{r}
+choose(N, n)
+```

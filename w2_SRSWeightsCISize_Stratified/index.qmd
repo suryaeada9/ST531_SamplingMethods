@@ -8,6 +8,9 @@ format:
     slide-number: true
     toc: false
     smaller: true
+    embed-resources: true
+resources:
+  - ../Images/
 ---
 
 ```{r setup, include=FALSE}
@@ -58,6 +61,11 @@ Estimators can also be written using sampling weights:
 
 $$\hat{t}=\sum_{i\in\mathcal{S}}w_iy_i$$	
 
+and
+
+$$\bar{y}=\frac{\sum_{i\in\mathcal{S}}w_iy_i}{\sum_{i\in\mathcal{S}}w_i}$$	
+
+
 ---
 class: middle center
 
@@ -94,7 +102,9 @@ Pop proportion | $p=\frac{1}{N}\sum\limits_{i=1}^N\mathbb{1}(y_i=\text{ char})$ 
 We've also talked about how *accurate* an estimate is.
 
 
-![Three bullseyes are shown, one for each archer, with crosses indicating places where the arrows strike. The left bullseye has crosses on all sides of the center with some close to the center and some far away. The middle bullseye has crosses only above and to the right of the center and they are far from the center. The right bullseye has crosses on all sides of the center and they are all close to the center.](../Images/Lohr_2-3_archers.png)
+![Three bullseyes are shown, one for each archer, with crosses indicating places where the arrows strike. The left bullseye has crosses on all sides of the center with some close to the center and some far away. The middle bullseye has crosses only above and to the right of the center and they are far from the center. The right bullseye has crosses on all sides of the center and they are all close to the center.](../Images/Lohr_2-3_archers.png){height="10%"}
+
+## Review
 
 - A is *unbiased* but has *high* variance.
 - B is *biased* but has *low* variance.
@@ -558,8 +568,8 @@ Remember, $e=z_{\alpha/2}\sqrt{\frac{S^2}{n}}$.
 <br>
 
 
-| 68% | 95% | 99% 
-- | -
+n | 68% | 95% | 99% 
+- | - | - | -
 100 | 1 | 2 | 3
 400 | 0.5 | 1 | 1.5
 900 | 0.33 | 0.67 | 1
@@ -666,34 +676,22 @@ We want to estimate the pH of lakes in Oregon.
 
 We want to estimate the pH of lakes in Oregon.
 
-<br>
-
-We have classified lakes into three groups based on size:
-
-- Small ( $<1$ hectare)
-- Medium (between $1$ and $5$ hectares)
-- Large ( $>5$ hectares)	
-	
-<br>
-
 Practical issues we are aware of:
 
 - There are many more small lakes than large lakes.
 - pH is associated with elevation. Small lakes and lakes with lower pH tend to be at higher elevations.
 - Subpopulation estimates are also of interest.
 
----
-
-## Example - Oregon Lakes
-
 A SRS of lakes could result in:
 
 - Many small lakes and few large lakes [so, if small lakes tend to be at higher elevations, we get many lakes from higher elevations]
 - Many lakes from similar elevations	
 
-<br>
+---
 
-.orange[Solution]: stratify the sampling units prior to sampling.
+## Example - Oregon Lakes (Potential Solutions)
+
+Solution: stratify the sampling units prior to sampling.
 
 <br>
 
@@ -701,13 +699,21 @@ Could stratify by:
 
 - Size
 - Elevation	
+
+<br>
+
+We have classified lakes into three groups based on size:
+
+- Small ( $<1$ hectare)
+- Medium (between $1$ and $5$ hectares)
+- Large ( $>5$ hectares)
 	
 ---
 
 ## Reasons to use Stratified Sampling
 
 - Protect against obtaining a really bad sample
-- Want data of known precision for subgroups
+- Want data of known precision for subgroups (want a particular sample size from a sub-population)
 - May be more convenient to administer
 - May have  lower cost
 - Can give more precise (i.e., lower variance) estimates for the whole population
@@ -771,7 +777,7 @@ class: middle center
 
 ## Notation (1)
 
-| Population | Sample
+Quantity | Population | Sample
 - | - | -
 Size | $N$ | $n$
 Number of strata | $H$ | $H$
@@ -785,7 +791,7 @@ Value of $j$th unit in stratum $h$ | $y_{hj}$ | $y_{hj}, j\in\mathcal{S}_h$
 
 ## Notation (2)
 
-| Population | Sample
+Quantity | Population | Sample
 - | - | -
 Total in stratum $h$ | $t_h$ | $\hat{t}_h$
 Overall total | $t$ | $\hat{t}$
@@ -868,8 +874,8 @@ Also as before, $$\text{SE}(\bar{y}_\text{str})=\sqrt{\hat{V}(\bar{y}_\text{str}
 
 ## Summary
 
- | Estimator | Variance of Estimator
- - | -
+ Parameter | Estimator | Variance of Estimator
+ - | - | -
 Pop mean | $\bar{y}_\text{str}=\sum_{h=1}^H \frac{N_h}{N}\bar{y}_h$ | $\hat{V}(\bar{y}_\text{str})=\sum_{h=1}^H \left(1-\frac{n_h}{N_h}\right)\left(\frac{N_h}{N}\right)^2\frac{s_h^2}{n_h}$
 Pop total | $\hat{t}_\text{str}=\sum_{h=1}^H \hat{t}_h$ | $\hat{V}(\hat{t}_\text{str})=\sum_{h=1}^H \left(1-\frac{n_h}{N_h}\right) N_h^2 \frac{s_h^2}{n_h}$
 Pop proportion | $\hat{p}_\text{str}=\sum_{h=1}^H \frac{N_h}{N}\hat{p}_h$ | $\hat{V}(\hat{p}_\text{str})=\sum_{h=1}^H \left(1-\frac{n_h}{N_h}\right)\left(\frac{N_h}{N}\right)^2\frac{\hat{p}_h(1-\hat{p}_h)}{n_h-1}$
