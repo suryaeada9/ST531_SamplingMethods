@@ -1,0 +1,151 @@
+---
+title: "Using the 'survey' package"
+author: "ST 431/531"
+output: 
+  pdf_document:
+    highlight: kate
+    toc: true
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+There are several different packages that can implement sampling designs and analysis in R, as well as some that deal with a particular challenge like multiple imputation methods for missing data. This brief tutorial demonstrates some functionality from the `survey` package^[T. Lumley (2020) "survey: analysis of complex survey samples". R package version 4.0.] by Thomas Lumley, one of the most commonly used packages.
+
+The following book (by the author of the package) is a great reference: 
+
+- T. Lumley (2010) Complex Surveys: A Guide to Analysis Using R. John Wiley and Sons.
+
+Begin by loading the package.
+
+```{r message=FALSE, warning=FALSE}
+# install.packages("survey")
+library(survey)
+```
+
+## Example Data
+
+For this tutorial, we will use the `api` data from the `survey` package. These data assess student performance in California schools using the Academic Performance Index (API) metric, which is based on standardized testing of students. The data set contains information for all schools with at least 100 students.
+
+```{r}
+data(api)
+?api # to read more about the data
+```
+
+The following variables will be useful to us for this exercise:
+
+- `api00`: API in 2000
+- `enroll`: number of students enrolled
+- `stype`: school type (elementary/middle/high school)
+- `dnum`: district number
+- `snum`: school number
+
+Note: There are actually several different versions of the `api` data. 
+
+- `apipop` is the entire population (6194 observations). 
+- `apisrs` is a simple random sample of size 200. 
+- `apistrat` is a stratified sample of size 200 using `stype` (school type) as the stratification variable.
+- `apiclus1` is a one-stage cluster sample of size 183 using `dnum` (district number) as the clustering variable.
+- `apiclus2` is a two-stage cluster sample of size 126 using `dnum` (district number) as the clustering variable and then sampling schools (`snum`, school number) within districts.
+
+## Coding the Design
+
+The most challenging part of data analysis with this package is coding the sampling design under which the data were collected correctly. The function that does this is called `svydesign()` and is flexible for a variety of different designs. We'll start simple, then work up.
+
+### Simple Random Sample
+
+Use the `apisrs` data and specify `id=~1` to show there is no clustering. There is a column in the data called `fpc` which we name in the `fpc=~` argument to specify information about the finite population correction. For a SRS, the value of `fpc` is equal to the population size $N$, 6194 in this case, for every member of the sample.
+
+Take a moment to explore the `apisrs` data (200 rows) to make sure you're familiar with the `fpc` column.
+
+The `summary()` function can be used to print out some basics of the design to check that it has been coded correctly.
+
+```{r}
+d.srs <- svydesign(ids=~1, data=apisrs, fpc=~fpc)
+summary(d.srs)
+
+table(apisrs$fpc) # all values the same (population size)
+```
+
+### Stratified Random Sample
+
+Now, we use the `apistrat` dataset, which has data specifically collected by a stratified sample. Use the `strata=~` argument to specify the stratification variable (`stype`, school type). In addition, note that this dataset also has a `fpc` column, but its values are different. In particular, it contains $N_h$, the population stratum size, for the stratum that a particular unit is in. Therefore, there are three unique values of `fpc` (755, 1018, 4421) and they sum to 6194, the overall population size.
+
+```{r}
+d.strat <- svydesign(ids=~1, strata=~stype, data=apistrat, fpc=~fpc)
+summary(d.strat)
+
+table(apistrat$stype) # shows sample size in each stratum
+table(apistrat$fpc)   # shows stratum population sizes (same value in each stratum)
+```
+
+### One-Stage Cluster Sample
+
+Now, we use the `apiclus1` dataset, which has data specifically collected using a one-stage cluster sample. We provide information about the clustering variable (`dnum`, district number) using the `ids=~` argument. In this dataset, the `fpc` contains the same value (757) for each of the 183 clusters in the sample. This is the number of clusters in the population, $N$.
+
+```{r}
+d.clus1 <- svydesign(ids=~dnum, data=apiclus1, fpc=~fpc)
+summary(d.clus1)
+
+table(apiclus1$dnum) # shows M_i=m_i values in each cluster in sample
+table(apiclus1$fpc)  # all values the same (number of clusters in population)
+```
+
+### Two-Stage Cluster Sample
+
+Finally, we will use the `apiclus2` dataset, which has data specifically collected using a two-stage cluster sample. We provide information about the clustering variables in order from largest level to smallest level (`dnum+snum`, where `dnum` is district number and `snum` is school number) using the `ids=~` argument. We also need to provide two values for the `fpc=~` argument, corresponding to the two stages of sampling. The `fpc1` column contains the same value (757) for $N$, the number of clusters in the population, for each row in `apiclus2`. Note that this is also the same value as for the one-stage cluster sample. The `fpc2` column contains the value of $M_i$, the cluster size, for the cluster that the school in that row is in.
+
+```{r}
+d.clus2 <- svydesign(ids=~dnum+snum, data=apiclus2, fpc=~fpc1+fpc2)
+summary(d.clus2)
+
+table(apiclus2$dnum) # shows m_i values in each cluster in sample
+table(apiclus2$snum) # each value is different - it's like the element id
+table(apiclus2$fpc1) # all values the same (number of clusters in population)
+table(apiclus2$fpc2) # shows cluster population sizes (M_i)
+```
+
+### Other Designs
+
+Other, more complicated designs are possible too by modifying the `ids`, `probs`, `strata`, `fpc`, `weights`, and `pps` variables (among others). For example, one could create a three-stage design or an unequal probability design.
+
+
+## Estimators
+
+Now that we have encoded the *design* of the sample, it's relatively straightforward to come up with estimates of population means and totals using the `svymean()` and `svytotal()` functions. We first provide the name of the variable we are interested in estimating (e.g., `~api00`) and then the name of the design.
+
+### Simple Random Sample
+
+```{r}
+svymean(~api00, d.srs)
+svytotal(~enroll, d.srs, na.rm=TRUE) # remove missing values
+```
+
+### Stratified Random Sample
+
+```{r}
+svymean(~api00, d.strat)
+svytotal(~enroll, d.strat, na.rm=TRUE) # remove missing values
+```
+
+### One-Stage Cluster Sample
+
+```{r}
+svymean(~api00, d.clus1)
+svytotal(~enroll, d.clus1, na.rm=TRUE) # remove missing values
+```
+
+### Two-Stage Cluster Sample
+
+```{r}
+svymean(~api00, d.clus2)
+svytotal(~enroll, d.clus2, na.rm=TRUE) # remove missing values
+```
+
+
+
+

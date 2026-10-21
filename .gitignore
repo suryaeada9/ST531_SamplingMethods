@@ -36,6 +36,10 @@ vignettes/*.pdf
 *.utf8.md
 *.knit.md
 
+# output files
+*.html
+*.pdf
+
 # R Environment Variables
 .Renviron
 
