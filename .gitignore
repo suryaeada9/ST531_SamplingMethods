@@ -36,8 +36,8 @@ vignettes/*.pdf
 *.utf8.md
 *.knit.md
 
-# output files
-*.html
+# input files and pdf
+*.qmd
 *.pdf
 
 # R Environment Variables
