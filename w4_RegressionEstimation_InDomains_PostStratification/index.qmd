@@ -462,60 +462,79 @@ kable(output)
 
 ## Outline
 
-- Estimation in Domains
-  - Introduction
-  - Point estimate and variance for estimating a population mean
+- **Estimation in Domains** (Section 4.2)
+  - Introduction/Motivation
+  - Estimator of Population Mean and its Variance and Standard Error  
   - Example
-  - Point estimate and variance for estimating a population total
-- Poststratification
-  - Reasons to poststratify
-  - Point estimates
+  - Estimator of Population Total and its Variance and Standard Error
+- **Poststratification** (Section 4.4)
+  - Reasons to Poststratify
+  - Point Estimates
   - Variances
 
----
-class: middle center
-
 # Estimation in Domains
+
+## Motivation
+
+- We may want separate estimates for sub-populations after conducting a survey. 
+
+*Example*: You selected a simple random sample (SRS) of 500 students from OSU’s roster of 10,000 students to estimate the average GPA of all students. You are also interested in estimating the average GPA of students who own a car.
 
 ---
 
 ## Domains
 
-A **domain** is a subpopulation. They are like strata except they do not need to partition the population, and we do not need to know which units are in which domains in advance.
+A **domain** is a sub-population. Domains are like strata except they do not need to *partition* the population, and we do not know which units are in which domains in advance. (e.g., You don't know which OSU students from the roster have cars.)
 
 <br>
 
-The number of units in a domain is not known until they are sampled, so this number is a random variable.
+*Why treat this differently?*
 
-<br>
-
-Suppose there are $D$ domains. Let $\mathcal{U}_d$ be the index set of units in the population in domain $d$ and $N_d$ be the number of population units in $\mathcal{U}_d$. Then the population mean in domain $d$ is $$\bar{y}_{\mathcal{U}_d}=\frac{\sum_{i\in\mathcal{U}_d}y_i}{N_d}$$
+The number of units in a domain is not known until they are sampled, so this number too is a random variable.
 
 ---
 
 ## Visual representation of a domain
 
-.center[
-![:scale 70%, Rectangle divided into two groups where the boundary between the groups is dashed and wavy. A circle is overlaid on the boundary, with about one third of its area in one group and two thirds in the other. The boundary between the two groups within the circle is solid.](Images/domain.png)
-]
+:::: {.columns}
+::: {.column width="40%"}
+![](../Images/domain.png)
+:::
 
+::: {.column width="60%"}
+Here, the rectangle represents the population, and the circle represents a sample drawn from it. A squiggly line divides the population into two domains, reflecting the uncertainty about individual units’ domain membership in the population. In contrast, a straight line separates the two domains within the sample, indicating that each sampled unit’s domain membership is known.
+:::
+::::
 ---
+
+## Notation
+
+- $\mathcal{U}_d$: index set of units in the population in domain $d$ 
+- $N_d$: number of population units in $\mathcal{U}_d$
+- $\mathcal{S}_d$: index set of sampled units in domain $d$ 
+- $n_d$: number of sampled units in domain $d$
+- $\bar{y}_{\mathcal{U}_d}$: population mean in domain $d$
+- $\bar{y}_d$: sample mean in domain $d$
 
 ## Estimation in Domains
 
-We can estimate $\bar{y}_{\mathcal{U}_d}$ using the sample mean in domain $d$, $\bar{y}_d$.
+Goal is to get *domain-specific* estimates.
 
 <br>
 
-Let $\mathcal{S}_d$ be the index set of sampled units in domain $d$ and $n_d$ be the number of sampled units in domain $d$. Then $$\bar{y}_d=\frac{\sum_{i\in\mathcal{S}_d}y_i}{n_d}$$
+The population mean in domain $d$ is $$\bar{y}_{\mathcal{U}_d}=\frac{\sum_{i\in\mathcal{U}_d}y_i}{N_d}$$
+
+We can estimate $\bar{y}_{\mathcal{U}_d}$ using the sample mean in domain $d$, 
+
+$$\bar{y}_d=\frac{\sum_{i\in\mathcal{S}_d}y_i}{n_d}$$
 
 <br>
 
-Note: $n_d$ is a **random variable**. We can use ratio estimation!
+Note: $n_d$ is a **random variable**.
 
 ---
 
-## Examples
+## Some More Examples
 
 Example 1: Population is stream segments. Domain is segments with beaver activity.
 
@@ -525,11 +544,7 @@ Example 2: Population is households. Domain is households with more than 4 peopl
 
 ---
 
-## Estimation in Domains
-
-Goal is to get *domain-specific* estimates.
-
-<br>
+## Ratio Estimation for Estimation in Domains
 
 Estimation in domains is a special application of ratio estimation, but the goal is not to reduce variance.
 
@@ -604,10 +619,6 @@ $$\begin{align*}
 \end{align*}$$
 
 for $n$, $E(n_d)$ large. 
-
-<br>
-
-This looks familiar from Chapter 2.
 
 ---
 
