@@ -10,7 +10,8 @@ $light-gold: #fff6df;
 $red: #c8553d;
 $light-red: #fbecea;
 $dark: #263238;
-
+$orange: #e67e22;
+$light-orange: #fdf0e3;
 
 /*-- scss:rules --*/
 
@@ -66,7 +67,7 @@ $dark: #263238;
 }
 
 .reveal em {
-  color: $teal;
+  color: $orange;
   font-style: italic;
 }
 
