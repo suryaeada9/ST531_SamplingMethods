@@ -4,6 +4,9 @@ subtitle: "Regression Estimation | Estimation In Domains | Post Stratification "
 author: "Week 4"
 format:
   revealjs:
+    html-math-method:
+      method: mathjax
+      url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
     theme: [default, ../custom.scss]
     slide-number: true
     toc: false
