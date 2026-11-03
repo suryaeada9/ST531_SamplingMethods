@@ -4,10 +4,16 @@ subtitle: "SRS Sample Weights, Confidence Intervals, Sample Size Estimation | In
 author: "Week 2"
 format:
   revealjs:
+    html-math-method:
+      method: mathjax
+      url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
     theme: [default, ../custom.scss]
     slide-number: true
     toc: false
     smaller: true
+    embed-resources: true
+resources:
+  - ../Images/
 ---
 
 ```{r setup, include=FALSE}
@@ -558,8 +564,8 @@ Remember, $e=z_{\alpha/2}\sqrt{\frac{S^2}{n}}$.
 <br>
 
 
-| 68% | 95% | 99% 
-- | -
+| | 68% | 95% | 99% 
+ - |- |- | -
 100 | 1 | 2 | 3
 400 | 0.5 | 1 | 1.5
 900 | 0.33 | 0.67 | 1
@@ -762,8 +768,6 @@ Public opinion poll designed to estimate the proportion of voters in a county wh
   - Calculate $\bar{y}$, $\hat{t}$, $\hat{p}$ for the design used with data that have been collected
 	- Calculate SEs, CIs for estimators
 
----
-class: middle center
 
 # Notation and Estimators
 
@@ -771,7 +775,7 @@ class: middle center
 
 ## Notation (1)
 
-| Population | Sample
+| | Population | Sample
 - | - | -
 Size | $N$ | $n$
 Number of strata | $H$ | $H$
@@ -785,7 +789,7 @@ Value of $j$th unit in stratum $h$ | $y_{hj}$ | $y_{hj}, j\in\mathcal{S}_h$
 
 ## Notation (2)
 
-| Population | Sample
+| | Population | Sample
 - | - | -
 Total in stratum $h$ | $t_h$ | $\hat{t}_h$
 Overall total | $t$ | $\hat{t}$
@@ -868,8 +872,8 @@ Also as before, $$\text{SE}(\bar{y}_\text{str})=\sqrt{\hat{V}(\bar{y}_\text{str}
 
 ## Summary
 
- | Estimator | Variance of Estimator
- - | -
+ |  | Estimator | Variance of Estimator
+ | - | - | - |
 Pop mean | $\bar{y}_\text{str}=\sum_{h=1}^H \frac{N_h}{N}\bar{y}_h$ | $\hat{V}(\bar{y}_\text{str})=\sum_{h=1}^H \left(1-\frac{n_h}{N_h}\right)\left(\frac{N_h}{N}\right)^2\frac{s_h^2}{n_h}$
 Pop total | $\hat{t}_\text{str}=\sum_{h=1}^H \hat{t}_h$ | $\hat{V}(\hat{t}_\text{str})=\sum_{h=1}^H \left(1-\frac{n_h}{N_h}\right) N_h^2 \frac{s_h^2}{n_h}$
 Pop proportion | $\hat{p}_\text{str}=\sum_{h=1}^H \frac{N_h}{N}\hat{p}_h$ | $\hat{V}(\hat{p}_\text{str})=\sum_{h=1}^H \left(1-\frac{n_h}{N_h}\right)\left(\frac{N_h}{N}\right)^2\frac{\hat{p}_h(1-\hat{p}_h)}{n_h-1}$
