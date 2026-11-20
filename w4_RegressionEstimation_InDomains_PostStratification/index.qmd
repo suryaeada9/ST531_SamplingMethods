@@ -283,8 +283,8 @@ $$\text{SE}(\hat{\bar{y}}_\text{reg})=\sqrt{\left(1-\frac{n}{N}\right)\frac{s_e^
 
 ## Summary (For Estimating Population Totals)
 
- | Estimator | Residual $e_i$ 
-- | -
+Type | Estimator | Residual $e_i$ 
+- | - | - 
 Naive | $\hat{t}_y$ | $y_i-\bar{y}$ 
 Ratio | $\hat{t}_y\left(\frac{t_x}{\hat{t}_x}\right)$ | $y_i-\hat{B}x_i$ 
 Regression | $N[\bar{y}+\hat{B}_1(\bar{x}_\mathcal{U}-\bar{x})]$ | $y_i-\hat{B}_0-\hat{B}_1x_i$
